@@ -26,4 +26,7 @@ soup.generate_record_file_for_allteam()
 ・まだ現役選手のみ
 →今後、引退後の選手データも取得する必要がある
 →URLに一意の数値(8桁)があるため実装可能
+http://npb.jp/bis/players/81183848.html
 →別ファイルで作成
+・Common.pyを作成して現役、引退選手の共通処理を外だしにする
+
