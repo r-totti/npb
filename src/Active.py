@@ -33,7 +33,7 @@ class NpbPlayer:
     # 1選手のマスタデータをCSVファイルに出力
     def output_record_to_csv_file_ma(self, fname):
         if len(self.ary_ma) > 0:
-            with open(fname, "w") as fh:
+            with open(fname, "w", encoding="utf-8_sig") as fh:
                 writer = csv.writer(fh, lineterminator="\n")
                 writer.writerows(self.ary_ma)
 
