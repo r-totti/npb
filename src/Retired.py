@@ -6,10 +6,10 @@ import csv
 # ////////////////////////////////////////////////////////////////
 class NpbPlayer:
     # ------------------------------------------------------------
-    def __init__(self, name, url):
-        self.name = name
-        self.url = "http://npb.jp" + url
-        self.filename = url.replace('/bis/players/', '').replace('.html', '')
+    def __init__(self, url):
+        # self.name = name
+        self.url = url
+        self.filename = url.replace('http://npb.jp/bis/players/', '').replace('.html', '')
         self.ary_record_pitch = []  # 投手記録
         self.ary_record_bat = []  # 打者記録
         self.ary_ma = []    # マスタデータ
@@ -34,7 +34,7 @@ class NpbPlayer:
     # 1選手のマスタデータをCSVファイルに出力
     def output_record_to_csv_file_ma(self, fname):
         if len(self.ary_ma) > 0:
-            with open(fname, "w") as fh:
+            with open(fname, "w", encoding="utf-8_sig") as fh:
                 writer = csv.writer(fh, lineterminator="\n")
                 writer.writerows(self.ary_ma)
 
@@ -97,37 +97,20 @@ class NpbPlayer:
             self.ary_ma.append(ary_ma_record)
             return True
 
-
-# ////////////////////////////////////////////////////////////////
-def get_player_list_detail(resp):
-    ary_cPlayer = []
-    bs = BeautifulSoup(resp.read(), "html.parser")
-    # find name
-    for tr in bs.findAll("tr", {"class": "rosterPlayer"}):
-        td = tr.find("td", {"class": "rosterRegister"})
-        a = td.find("a")
-        if a == None:
-            continue
-        url = a.attrs["href"]
-        name = a.get_text()
-        cPlayer = NpbPlayer(name, url)
-        ary_cPlayer.append(cPlayer)
-    return ary_cPlayer
-
-
 # ////////////////////////////////////////////////////////////////
 def get_retired_player_list():
+    ary_cPlayer = []
     httpheader = 'http://npb.jp/bis/players/'
     extension = '.html'
     # http://npb.jp/bis/players/81183848.html
     try:
-        response = requests.get(httpheader + '' + extension)
+        response = requests.get(httpheader + '81183848' + extension)
         print(response.status_code)    # HTTPのステータスコード取得
-        print(response.text)
     except requests.exceptions.HTTPError as e:
         print("URL_Error : ", e.response)
     else:
-        ary_cPlayer = get_player_list_detail(response)
+        cPlayer = NpbPlayer(httpheader + '81183848' + extension)
+        ary_cPlayer.append(cPlayer)
         return ary_cPlayer
 
 # ////////////////////////////////////////////////////////////////
@@ -139,7 +122,7 @@ def generate_record_file_for_allplayer():
     ary_cPlayer = get_retired_player_list()
     for cPlayer in ary_cPlayer:
         if True == cPlayer.get_record():
-            print("now generating %s" % cPlayer.name)
-            cPlayer.output_record_to_csv_file_bat("./retired/da/%s_%s_da.txt" % (cPlayer.filename, cPlayer.name))
-            cPlayer.output_record_to_csv_file_pitch("./retired/pt/%s_%s_pt.txt" % (cPlayer.filename, cPlayer.name))
-            cPlayer.output_record_to_csv_file_ma("./retired/ma/%s_%s_ma.txt" % (cPlayer.filename, cPlayer.name))
+            print("now generating %s" % cPlayer.filename)
+            cPlayer.output_record_to_csv_file_bat("./retired/da/%s_da.txt" % (cPlayer.filename))
+            cPlayer.output_record_to_csv_file_pitch("./retired/pt/%s_pt.txt" % (cPlayer.filename))
+            cPlayer.output_record_to_csv_file_ma("./retired/ma/%s_ma.txt" % (cPlayer.filename))
