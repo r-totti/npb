@@ -103,15 +103,25 @@ def get_retired_player_list():
     httpheader = 'http://npb.jp/bis/players/'
     extension = '.html'
     # http://npb.jp/bis/players/81183848.html
-    try:
-        response = requests.get(httpheader + '81183848' + extension)
-        print(response.status_code)    # HTTPのステータスコード取得
-    except requests.exceptions.HTTPError as e:
-        print("URL_Error : ", e.response)
-    else:
-        cPlayer = NpbPlayer(httpheader + '81183848' + extension)
-        ary_cPlayer.append(cPlayer)
-        return ary_cPlayer
+    for number12 in range(2, 100):
+        num12 = str(number12).zfill(2)
+        for number34 in range(0, 10):
+            num34 = str(number34).ljust(2, '0')
+            for number5678 in range(3800, 3900):
+                num5678 = str(number5678).zfill(4)
+                url = httpheader + num12 + num34 + num5678 + extension
+                try:
+                    response = requests.get(url)
+                    print(url)
+                    # print(response.status_code)   # HTTPのステータスコード取得
+                except requests.exceptions.HTTPError as e:
+                    print("URL_Error : ", e.response)
+                if response.status_code == 404:
+                    pass
+                else:
+                    cPlayer = NpbPlayer(url)
+                    ary_cPlayer.append(cPlayer)
+    return ary_cPlayer
 
 # ////////////////////////////////////////////////////////////////
 def generate_record_file_for_1player(team_url, prefix):
