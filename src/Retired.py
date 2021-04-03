@@ -103,7 +103,7 @@ def get_retired_player_list():
     httpheader = 'http://npb.jp/bis/players/'
     extension = '.html'
     # http://npb.jp/bis/players/81183848.html
-    for number12 in range(2, 100):
+    for number12 in range(11, 12):
         num12 = str(number12).zfill(2)
         for number34 in range(0, 10):
             num34 = str(number34).ljust(2, '0')
@@ -133,6 +133,6 @@ def generate_record_file_for_allplayer():
     for cPlayer in ary_cPlayer:
         if True == cPlayer.get_record():
             print("now generating %s" % cPlayer.filename)
-            cPlayer.output_record_to_csv_file_bat("./retired/da/%s_da.txt" % (cPlayer.filename))
-            cPlayer.output_record_to_csv_file_pitch("./retired/pt/%s_pt.txt" % (cPlayer.filename))
-            cPlayer.output_record_to_csv_file_ma("./retired/ma/%s_ma.txt" % (cPlayer.filename))
+            cPlayer.output_record_to_csv_file_bat("../retired/da/%s_da.txt" % (cPlayer.filename))
+            cPlayer.output_record_to_csv_file_pitch("../retired/pt/%s_pt.txt" % (cPlayer.filename))
+            cPlayer.output_record_to_csv_file_ma("../retired/ma/%s_ma.txt" % (cPlayer.filename))
