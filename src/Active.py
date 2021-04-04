@@ -135,9 +135,9 @@ def generate_record_file_for_1team(team_url, prefix):
     for cPlayer in ary_cPlayer:
         if True == cPlayer.get_record():
             print("now generating %s" % cPlayer.name)
-            cPlayer.output_record_to_csv_file_bat("./team/%s/da/%s_%s_da.txt" % (prefix, cPlayer.filename, cPlayer.name))
-            cPlayer.output_record_to_csv_file_pitch("./team/%s/pt/%s_%s_pt.txt" % (prefix, cPlayer.filename, cPlayer.name))
-            cPlayer.output_record_to_csv_file_ma("./team/%s/ma/%s_%s_ma.txt" % (prefix, cPlayer.filename, cPlayer.name))
+            cPlayer.output_record_to_csv_file_bat("../team/%s/da/%s_%s_da.txt" % (prefix, cPlayer.filename, cPlayer.name))
+            cPlayer.output_record_to_csv_file_pitch("../team/%s/pt/%s_%s_pt.txt" % (prefix, cPlayer.filename, cPlayer.name))
+            cPlayer.output_record_to_csv_file_ma("../team/%s/ma/%s_%s_ma.txt" % (prefix, cPlayer.filename, cPlayer.name))
 
 
 # ////////////////////////////////////////////////////////////////
