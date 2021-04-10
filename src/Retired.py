@@ -9,7 +9,7 @@ class NpbPlayer:
     def __init__(self, url):
         # self.name = name
         self.url = url
-        self.filename = url.replace('http://npb.jp/bis/players/', '').replace('.html', '')
+        self.filename = url.replace('http://npb.jp/bis/players/', '').replace('.html', '').replace('\n', '')
         self.ary_record_pitch = []  # 投手記録
         self.ary_record_bat = []  # 打者記録
         self.ary_ma = []    # マスタデータ
@@ -100,27 +100,20 @@ class NpbPlayer:
 # ////////////////////////////////////////////////////////////////
 def get_retired_player_list():
     ary_cPlayer = []
-    httpheader = 'http://npb.jp/bis/players/'
-    extension = '.html'
     # http://npb.jp/bis/players/81183848.html
-    for number12 in range(11, 12):
-        num12 = str(number12).zfill(2)
-        for number34 in range(0, 10):
-            num34 = str(number34).ljust(2, '0')
-            for number5678 in range(3800, 3900):
-                num5678 = str(number5678).zfill(4)
-                url = httpheader + num12 + num34 + num5678 + extension
-                try:
-                    response = requests.get(url)
-                    print(url)
-                    # print(response.status_code)   # HTTPのステータスコード取得
-                except requests.exceptions.HTTPError as e:
-                    print("URL_Error : ", e.response)
-                if response.status_code == 404:
-                    pass
-                else:
-                    cPlayer = NpbPlayer(url)
-                    ary_cPlayer.append(cPlayer)
+    with open('npb.txt', 'r') as f:
+        for line in f:
+            try:
+                response = requests.get(line)
+                print(line)
+                # print(response.status_code)   # HTTPのステータスコード取得
+            except requests.exceptions.HTTPError as e:
+                print("URL_Error : ", e.response)
+            if response.status_code == 404:
+                pass
+            else:
+                cPlayer = NpbPlayer(line)
+                ary_cPlayer.append(cPlayer)
     return ary_cPlayer
 
 # ////////////////////////////////////////////////////////////////
