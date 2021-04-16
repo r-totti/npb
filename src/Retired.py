@@ -9,7 +9,7 @@ class NpbPlayer:
     def __init__(self, url):
         # self.name = name
         self.url = url
-        self.filename = url.replace('http://npb.jp/bis/players/', '').replace('.html', '').replace('\n', '')
+        self.filename = url.replace('http://npb.jp/bis/players/', '').replace('.html', '')
         self.ary_record_pitch = []  # 投手記録
         self.ary_record_bat = []  # 打者記録
         self.ary_ma = []    # マスタデータ
@@ -104,16 +104,17 @@ def get_retired_player_list():
     with open('npb.txt', 'r') as f:
         for line in f:
             try:
-                response = requests.get(line)
-                print(line)
+                url = line.replace('\n','')
+                response = requests.get(url)
+                print(url)
                 # print(response.status_code)   # HTTPのステータスコード取得
             except requests.exceptions.HTTPError as e:
                 print("URL_Error : ", e.response)
-            if response.status_code == 404:
-                pass
-            else:
-                cPlayer = NpbPlayer(line)
+            if response.status_code == 200:
+                cPlayer = NpbPlayer(url)
                 ary_cPlayer.append(cPlayer)
+            else:
+                pass
     return ary_cPlayer
 
 # ////////////////////////////////////////////////////////////////
